@@ -12,7 +12,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.db import djangoforms
 
 
-specializations = set(['Neurology,', 'General', 'Psychology', 'Dental']);
+specializations = set(['Neurology', 'General', 'Psychology', 'Dental']);
 hours = ["%02d" % h for h in range(1,13)]
 mins = ["%02d" % h for h in range(0,60)]
 
@@ -65,7 +65,6 @@ class Doctor(db.Model):
     address           = db.PostalAddressProperty('Address')
     fee               = db.IntegerProperty('Fee')
     phone             = db.PhoneNumberProperty('Phone')
-    email             = db.EmailProperty('Email')
     rating            = db.RatingProperty('Rating')
     
     def sits_from_string(self, time_as_str=None):
@@ -131,16 +130,12 @@ class RegisterDoctor(webapp.RequestHandler):
         doctor.address = db.PostalAddress(self.request.get('address'))
         doctor.fee = int(self.request.get('fee'))
         doctor.phone = db.PhoneNumber(self.request.get('phone'))
-        doctor.email = db.Email(self.request.get('email'))
+       
         
         doctor.put()
         
         self.redirect('/')
         
-        
-    
-
-
 #FIXME: Remove this stuff.
 class MainPage(webapp.RequestHandler):
     def get(self):
