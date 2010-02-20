@@ -14,7 +14,7 @@ from google.appengine.ext.db import djangoforms
 
 specializations = set(['Neurology', 'General', 'Psychology', 'Dental']);
 hours = ["%02d" % h for h in range(1,13)]
-mins = ["%02d" % h for h in range(0,60)]
+mins = ["%02d" % h for h in range(0,60, 15)]
 
 #TODO: Doctor deletion
 #TODO: What should be the default values for time boxes?
