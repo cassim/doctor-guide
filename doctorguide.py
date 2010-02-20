@@ -24,6 +24,8 @@ mins = ["%02d" % h for h in range(0,60)]
 # if pm:
 #   time_to_store += 12
 
+# AM/PM format should be followed or military time format?
+
 
 def time_as_number(t):
     temp = t.split(':')
@@ -79,16 +81,6 @@ class Doctor(db.Model):
         else:
            self.sits_upto = time_as_number(time_as_str)
     
-    
-    
-
-# This is just temporary as we will not be generating the form
-# own our own.
-class DoctorForm(djangoforms.ModelForm):
-    class Meta:
-        model   = Doctor
-        exclude = ['rating']
-    
 
 #TODO: The form should have a client side validation.
 class DoctorsListings(webapp.RequestHandler):
@@ -136,50 +128,14 @@ class RegisterDoctor(webapp.RequestHandler):
         
         self.redirect('/')
         
-#FIXME: Remove this stuff.
+#FIXME:choose a better purpose of main() instead of just forwarding requests ;)
 class MainPage(webapp.RequestHandler):
     def get(self):
-		  
-        self.response.out.write("""<html><head><title>Guest book</title></head><body>""")
+	self.redirect('/')	  
         
-        greetings = db.GqlQuery("SELECT * FROM Greeting ORDER BY date DESC LIMIT 10")
-        
-        for greeting in greetings:
-            if greeting.author:
-                self.response.out.write('<b>%s</b> wrote:' % greeting.author.nickname())
-            else:
-                 self.response.out.write('An unknown person wrote')
-            self.response.out.write("<blockquote>%s</blockquote>" % cgi.escape(greeting.content))
-
-            
-        
-        # Write the page footer.
-        self.response.out.write("""
-          <form action="/sign" method="post">
-            <div><textarea name="content" rows="3" cols="60"></textarea></div>
-            <div><input type="submit" value="Sign Guestbook"></div>
-          </form>
-          </body>
-        </html>
-        """)
-
-
-class GuestBook(webapp.RequestHandler):
-
-    def post(self):
-        greeting = Greeting()
-        
-        if users.get_current_user():
-            greeting.author = users.get_current_user()
-            
-        greeting.content = self.request.get('content')
-        greeting.put()
-        self.redirect('/')
-
 application = webapp.WSGIApplication([
 ('/', DoctorsListings),
-('/newdoctor', RegisterDoctor),
-('/sign', GuestBook)], debug=True)
+('/newdoctor', RegisterDoctor)], debug=True)
 
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
