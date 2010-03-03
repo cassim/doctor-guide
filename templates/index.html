@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>Doctors</title>
+<link type="text/css" rel="stylesheet" href="static/looks.css" />
+</head>
+
+<body>
+<div id="header">
+   <h1><a href="#" class="selected">Doctor Listing</a></h1>
+   <ul>
+    <li><a href="newdoctor">New Doctor</a></li>
+    <li><a href="todo">Todo</a></li>
+   </ul>
+</div>
+<div id="content">
+   <h1>Your Doctor Guide: About</h1>
+   <p>
+   Welcome to the site dedicated to finding the best doctor.
+   We hope you find the information
+   mentioned here useful.
+   </p>
+</div>   
+<!--<h1>Your Doctor Guide!</h1> -->
+<h2>Doctors:</h2>
+<div id="listing">
+{% for doctor in doctors %}
+    <div id="item">
+      <ul>
+        <li><b>Name:</b> Dr. {{ doctor.name }}</li>
+        <li><b>Specialization:</b> {{ doctor.specialization }}</li>
+        <li><b>Sits from</b> {{ doctor.sits_from_string }} </b>up to</b> {{ doctor.sits_upto_string }}</li>
+        <li><b>Fee:</b> {{ doctor.fee }}</li>
+        <li><b>Address:</b> {{ doctor.address }}</li>
+        <li><b>Phone:</b> {{ doctor.phone }}</li>
+        <li><b>Rating:</b> {{ doctor.rating }}</li>
+      </ul>
+    </div>
+{% endfor %}
+</div>
+
+</body>
+</html>

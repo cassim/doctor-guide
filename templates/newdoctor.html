@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>New Doctor</title>
+<link type="text/css" rel="stylesheet" href="static/looks.css" />
+</head>
+
+<body>
+
+<div id="header">
+   <h1><a href="index">Doctor Listing</a></h1>
+   <ul>
+    <li><a href="#" class="selected">New Doctor</a></li>
+    <li><a href="todo">Todo</a></li>
+   </ul>
+</div>
+
+<h2>Add new doctor:</h2>
+<form action="/newdoctor", method="post">
+<p><label for="id_name">Name:</label> <input type="text" name="name" id="id_name" /></p>
+<p><label for="id_specialization">Specialization:</label> <select name="specialization" id="id_specialization">
+<option value="Neurology">Neurology</option>
+<option value="Dental">Dental</option>
+<option value="Psychology">Psychology</option>
+<option value="General" selected="selected">General</option>
+</select></p>
+<p>
+  <label for="id_sits_from">From:</label>
+  <select name="sits_from_hour" id="id_sits_from_hour">
+  {% for h in hours %}
+    <option value="{{ h }}">{{ h }}</option>
+  {% endfor %}
+  </select>
+  <select name="sits_from_min" id="id_sits_from_min">
+  {% for m in mins %}
+    <option value="{{ m }}">{{ m }}</option>
+  {% endfor %}
+  </select>
+  <select name="sits_from_ampm" id="id_sits_from_ampm">
+    <option value="AM">AM</option>
+    <option value="PM">PM</option>
+  </select>
+</p>
+<p>
+<label for="id_sits_upto">Up to:</label>
+<select name="sits_upto_hour" id="id_sits_upto_hour">
+ {% for h in hours %}
+  <option value="{{ h }}">{{ h }}</option>
+ {% endfor %}
+</select>
+<select name="sits_upto_min" id="id_sits_upto_min">
+  {% for m in mins %}
+    <option value="{{ m }}">{{ m }}</option>
+  {% endfor %}
+</select>
+<select name="sits_upto_ampm" id="id_sits_upto_ampm">
+    <option value="AM">AM</option>
+    <option value="PM">PM</option>
+</select>
+</select>
+</p>
+<p><label for="id_address">Address:</label> <input type="text" name="address" id="id_address" /></p>
+<p><label for="id_fee">Fee:</label> <input type="text" name="fee" id="id_fee" /></p>
+<p><label for="id_phone">Phone:</label> <input type="text" name="phone" id="id_phone" /></p>
+<input type="submit">
+</form>
+</body>
+</html>
