@@ -80,31 +80,35 @@ class Doctor(db.Model):
            return time_as_string(self.sits_upto)
         else:
            self.sits_upto = time_as_number(time_as_str)
-    
 
+# ----- Todo Section page -----    
+class ToDo(webapp.RequestHandler):
+    def get(self):
+	path = os.path.join(os.path.dirname(__file__), 'templates/todo.html')
+	outstr = template.render(path, {})
+	self.response.out.write(outstr)
+		
 #TODO: The form should have a client side validation.
 class DoctorsListings(webapp.RequestHandler):
 
     def get(self):
         
         doctors = db.GqlQuery("SELECT * FROM Doctor ORDER BY rating DESC LIMIT 10");
+               
+        path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
+        self.response.out.write(template.render(path, {'doctors':doctors}))
         
-        template_values = {'doctors': doctors, 
-                           'specializations' : specializations,
-                           'hours': hours,
-                           'mins': mins
-                           }
-        
-        path = os.path.join(os.path.dirname(__file__), 'index.html')
-        
-        self.response.out.write(template.render(path, template_values))
-        #self.response.out.write(DoctorForm())
-	
 		
 #TODO: This should do validation and should put all the errors in a dictionary
 # that would be forwarded to the main page where it would be visible on the 
 # form with relvant error messges.
 class RegisterDoctor(webapp.RequestHandler):
+    def get(self):
+
+	path = os.path.join(os.path.dirname(__file__), 'templates/newdoctor.html')
+	outstr = template.render(path, {'hours':hours, 'mins':mins})
+	self.response.out.write(outstr)
+
     def post(self):
         
         doctor= Doctor(name=self.request.get('name'),  specialization=self.request.get('specialization'))
@@ -122,20 +126,20 @@ class RegisterDoctor(webapp.RequestHandler):
         doctor.address = db.PostalAddress(self.request.get('address'))
         doctor.fee = int(self.request.get('fee'))
         doctor.phone = db.PhoneNumber(self.request.get('phone'))
-       
         
         doctor.put()
-        
         self.redirect('/')
         
-#FIXME:choose a better purpose of main() instead of just forwarding requests ;)
+# ----- MAIN -----
 class MainPage(webapp.RequestHandler):
     def get(self):
 	self.redirect('/')	  
         
 application = webapp.WSGIApplication([
 ('/', DoctorsListings),
-('/newdoctor', RegisterDoctor)], debug=True)
+('/index', DoctorsListings),
+('/newdoctor', RegisterDoctor),
+('/todo', ToDo)], debug=True)
 
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
